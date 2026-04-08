@@ -165,6 +165,14 @@ const raftNode = {
     return true;
   },
 
+
+  /**
+ * Calculates the minimum vote count needed for a quorum.
+ * For a 3-node cluster, majority is 2 votes.
+ * @returns {number} Minimum votes required to win election
+ */
+
+
   getMajorityCount() {
     return Math.floor((this.peers.length + 1) / 2) + 1;
   }
