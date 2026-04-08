@@ -74,6 +74,11 @@ const raftNode = {
     }
   },
 
+  /**
+ * Transitions this node to candidate state and starts a new election.
+ * Increments term, votes for self, then broadcasts RequestVote RPCs.
+ */
+
   async becomeCandidate() {
     const rpcClient = require("./rpcClient");
 
