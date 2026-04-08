@@ -100,6 +100,12 @@ const raftNode = {
     }
   },
 
+
+  /**
+ * Transitions this node to leader state after winning majority votes.
+ * Cancels election timer and starts sending periodic heartbeats.
+ */
+
   becomeLeader() {
     const rpcClient = require("./rpcClient");
 
