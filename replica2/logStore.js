@@ -63,6 +63,11 @@ const logStore = {
     return this.entries.slice(Math.max(0, startIndex));
   },
 
+  /**
+ * Removes conflicting log entries from the given index onward.
+ * Protects already-committed entries from being truncated.
+ * @param {number} index - Index from which to truncate
+ */
   truncateFrom(index) {
     const safeIndex = Math.max(index, this.commitIndex + 1);
     if (safeIndex < this.entries.length) {
