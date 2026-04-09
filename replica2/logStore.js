@@ -41,6 +41,14 @@ const logStore = {
     return this.entries[this.entries.length - 1].term;
   },
 
+  /**
+ * Commits all entries up to and including the given index.
+ * Returns only newly committed entries since the last commit.
+ * Ensures entries are not double-committed on repeated calls.
+ * @param {number} index - Log index to commit up to
+ * @returns {Array} Newly committed entries
+ */
+
   commit(index) {
     if (index > this.commitIndex && index < this.entries.length) {
       const startIndex = this.commitIndex + 1;
