@@ -110,6 +110,13 @@ async function broadcastAppendEntries(entry) {
   await Promise.allSettled(raftNode.peers.map((peerUrl) => sendAppendEntries(peerUrl, entry)));
 }
 
+/**
+ * Requests missing log entries from a peer starting at fromIndex.
+ * Used by rejoining nodes to catch up with the current log state.
+ * @param {string} peerUrl - Peer to sync from
+ * @param {number} fromIndex - Starting index to fetch entries from
+ * @returns {object|null} Sync response or null on failure
+ */
 async function sendSyncLog(peerUrl, fromIndex) {
   try {
     const response = await axios.post(
