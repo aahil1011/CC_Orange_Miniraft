@@ -76,7 +76,11 @@ const leaderTracker = {
   getLeaderTerm() {
     return this.currentLeaderTerm;
   },
-
+/**
+ * Checks whether a leader has been discovered in the cluster.
+ * Used by wsHandler before forwarding strokes to avoid null URL errors.
+ * @returns {boolean} True if a leader URL is currently tracked
+ */
   isLeaderKnown() {
     return this.currentLeaderUrl !== null;
   }
