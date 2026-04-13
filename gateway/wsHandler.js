@@ -12,7 +12,11 @@ function setupWebSocket(server) {
       log(`Client disconnected, total: ${clients.size}`);
     }
   }
-
+/**
+ * Broadcasts a message to all currently connected WebSocket clients.
+ * Automatically removes clients that have disconnected or errored.
+ * @param {object} message - Message object to serialize and send
+ */
   function broadcastToAll(message) {
     const serializedMessage = JSON.stringify(message);
 
