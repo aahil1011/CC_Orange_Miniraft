@@ -136,3 +136,4 @@ This project is a distributed drawing board backed by a three-node RAFT cluster.
     |-- logs.sh
     `-- start.sh
 ```
+"# Distributed Drawing Board - RAFT Consensus" 
