@@ -148,7 +148,7 @@ body {
   align-items: center;
   gap: 12px;
 }
-/* ─── Tool Panel: Color Picker & Brush Controls ─────────────────────── */
+/* ─── Tool Panel: Color Picker & Brush controls ─────────────────────── */
 .color-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
