@@ -12,7 +12,11 @@ function setupWebSocket(server) {
       log(`Client disconnected, total: ${clients.size}`);
     }
   }
-
+/**
+ * Broadcasts a message to all currently connected WebSocket clients.
+ * Automatically removes clients that have disconnected or errored.
+ * @param {object} message - Message object to serialize and send
+ */
   function broadcastToAll(message) {
     const serializedMessage = JSON.stringify(message);
 
@@ -26,7 +30,13 @@ function setupWebSocket(server) {
       }
     }
   }
-
+/**
+ * Forwards a stroke from a WebSocket client to the current RAFT leader.
+ * Retries once automatically if the leader has changed (403 response).
+ * Broadcasts the stroke to all clients on successful commit.
+ * @param {object} stroke - Stroke data from the client
+ * @param {boolean} hasRetried - Whether a retry has already been attempted
+ */
   async function forwardStrokeToLeader(stroke, hasRetried = false) {
     if (!leaderTracker.isLeaderKnown()) {
       broadcastToAll({

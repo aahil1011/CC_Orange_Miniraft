@@ -8,7 +8,11 @@ const express = require("express");
 const leaderTracker = require("./leaderTracker");
 const setupWebSocket = require("./wsHandler");
 const { log } = require("./logger");
-
+/**
+ * Gateway server entry point.
+ * Serves the frontend, exposes a /health endpoint,
+ * and coordinates WebSocket connections with the RAFT cluster.
+ */
 const app = express();
 const server = http.createServer(app);
 const port = Number(process.env.GATEWAY_PORT) || 4000;

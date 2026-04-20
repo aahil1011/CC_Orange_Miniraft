@@ -27,7 +27,11 @@ const leaderTracker = {
       void this.poll();
     }, 1000);
   },
-
+/**
+ * Polls all known replica nodes to discover the current leader.
+ * Updates currentLeaderUrl and currentLeaderTerm on success.
+ * Called on startup and every 1000ms via setInterval.
+ */
   async poll() {
     let discoveredLeaderUrl = null;
     let discoveredLeaderTerm = null;
@@ -72,7 +76,11 @@ const leaderTracker = {
   getLeaderTerm() {
     return this.currentLeaderTerm;
   },
-
+/**
+ * Checks whether a leader has been discovered in the cluster.
+ * Used by wsHandler before forwarding strokes to avoid null URL errors.
+ * @returns {boolean} True if a leader URL is currently tracked
+ */
   isLeaderKnown() {
     return this.currentLeaderUrl !== null;
   }
