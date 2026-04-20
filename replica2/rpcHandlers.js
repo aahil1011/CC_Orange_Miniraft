@@ -39,6 +39,14 @@ router.post("/request-vote", (req, res) => {
 
 router.post("/heartbeat", (req, res) => {
   const { term, leaderId } = req.body;
+
+  // ✅ Keep this validation (important)
+  if (!leaderId || term === undefined) {
+    return res.status(400).json({
+      error: "Missing required fields: term, leaderId"
+    });
+  }
+
   const success = raftNode.receiveHeartbeat(term, leaderId);
 
   if (!success) {
@@ -56,7 +64,13 @@ router.post("/heartbeat", (req, res) => {
 
 router.post("/append-entries", (req, res) => {
   const { term, leaderId, entry, prevLogIndex, prevLogTerm } = req.body;
-  const result = raftNode.receiveAppendEntries(term, leaderId, entry, prevLogIndex, prevLogTerm);
+  const result = raftNode.receiveAppendEntries(
+    term,
+    leaderId,
+    entry,
+    prevLogIndex,
+    prevLogTerm
+  );
   return res.json(result);
 });
 
@@ -78,7 +92,10 @@ router.post("/stroke", (req, res) => {
 });
 
 router.post("/sync-log", (req, res) => {
-  const fromIndex = Number.isInteger(req.body.fromIndex) ? req.body.fromIndex : Number(req.body.fromIndex) || 0;
+  const fromIndex = Number.isInteger(req.body.fromIndex)
+    ? req.body.fromIndex
+    : Number(req.body.fromIndex) || 0;
+
   const entries = logStore.getEntriesFrom(fromIndex);
 
   log(`Sync-log requested from index ${fromIndex}`);
