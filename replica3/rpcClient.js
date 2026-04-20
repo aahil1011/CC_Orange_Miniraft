@@ -30,7 +30,9 @@ async function sendRequestVote(peerUrl) {
         term: raftNode.currentTerm,
         candidateId: raftNode.replicaId
       },
-      { timeout: 200 }
+      {
+        timeout: 200
+      }
     );
 
     raftNode.receiveVote(response.data.voteGranted, response.data.term);
@@ -49,7 +51,9 @@ async function sendHeartbeat(peerUrl) {
         term: raftNode.currentTerm,
         leaderId: raftNode.replicaId
       },
-      { timeout: 100 }
+      {
+        timeout: 100
+      }
     );
 
     if (response.data.term > raftNode.currentTerm) {
@@ -60,19 +64,10 @@ async function sendHeartbeat(peerUrl) {
   }
 }
 
-/**
- * Sends an AppendEntries RPC to a single peer replica.
- * Includes previous log index and term for consistency checks.
- * @param {string} peerUrl - Target peer URL
- * @param {object} entry - Log entry to replicate
- */
 async function sendAppendEntries(peerUrl, entry) {
   const peerId = getPeerId(peerUrl);
   const prevLogIndex = entry.index - 1;
-  const prevLogTerm =
-    prevLogIndex >= 0
-      ? (logStore.getEntry(prevLogIndex) || { term: 0 }).term
-      : 0;
+  const prevLogTerm = prevLogIndex >= 0 ? (logStore.getEntry(prevLogIndex) || { term: 0 }).term : 0;
 
   try {
     const response = await axios.post(
@@ -84,15 +79,12 @@ async function sendAppendEntries(peerUrl, entry) {
         prevLogIndex,
         prevLogTerm
       },
-      { timeout: 300 }
+      {
+        timeout: 300
+      }
     );
 
-    raftNode.receiveAppendAck(
-      peerId,
-      entry.index,
-      response.data.term,
-      response.data.success
-    );
+    raftNode.receiveAppendAck(peerId, entry.index, response.data.term, response.data.success);
   } catch (error) {
     return;
   }
@@ -100,38 +92,29 @@ async function sendAppendEntries(peerUrl, entry) {
 
 async function broadcastRequestVote() {
   raftNode.peers = getPeers();
-  await Promise.allSettled(
-    raftNode.peers.map((peerUrl) => sendRequestVote(peerUrl))
-  );
+  await Promise.allSettled(raftNode.peers.map((peerUrl) => sendRequestVote(peerUrl)));
 }
 
 async function broadcastHeartbeat() {
   raftNode.peers = getPeers();
-  await Promise.allSettled(
-    raftNode.peers.map((peerUrl) => sendHeartbeat(peerUrl))
-  );
+  await Promise.allSettled(raftNode.peers.map((peerUrl) => sendHeartbeat(peerUrl)));
 }
 
 async function broadcastAppendEntries(entry) {
   raftNode.peers = getPeers();
-  await Promise.allSettled(
-    raftNode.peers.map((peerUrl) => sendAppendEntries(peerUrl, entry))
-  );
+  await Promise.allSettled(raftNode.peers.map((peerUrl) => sendAppendEntries(peerUrl, entry)));
 }
 
-/**
- * Requests missing log entries from a peer starting at fromIndex.
- * Used by rejoining nodes to catch up with the current log state.
- * @param {string} peerUrl - Peer to sync from
- * @param {number} fromIndex - Starting index to fetch entries from
- * @returns {object|null} Sync response or null on failure
- */
 async function sendSyncLog(peerUrl, fromIndex) {
   try {
     const response = await axios.post(
       `${peerUrl}/sync-log`,
-      { fromIndex },
-      { timeout: 500 }
+      {
+        fromIndex
+      },
+      {
+        timeout: 500
+      }
     );
 
     return response.data;

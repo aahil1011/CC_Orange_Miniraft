@@ -1,0 +1,50 @@
+# Node modules
+**/node_modules/
+node_modules/
+
+# Environment files
+# Ignore all .env files but keep examples
+**/.env
+.env
+!.env.example
+!**/.env.example
+
+# Docker build/cache
+.docker/
+**/.docker/
+docker-compose.override.yml
+docker-compose.local.yml
+docker-compose.*.override.yml
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+Icon?
+.Trash-*
+
+# IDE / Editor
+.vscode/
+.idea/
+*.iml
+
+# npm / package manager logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# nodemon temporary files
+nodemon-debug.log
+.nodemon*
+
+# Text log output files (e.g., failover_logs.txt)
+failover_logs.txt
+*_logs.txt
+logs/*.txt
+
+# Misc temporary files
+tmp/
+temp/
+cache/
