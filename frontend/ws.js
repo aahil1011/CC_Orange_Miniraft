@@ -156,3 +156,8 @@
   state.healthHandle = window.setInterval(refreshHealth, 1500);
   connect();
 })();
+/**
+   * Manages the WebSocket connection to the gateway server.
+   * Handles auto-reconnect on disconnect, ping/pong keepalive,
+   * and routes incoming messages to the drawing board module.
+   */
