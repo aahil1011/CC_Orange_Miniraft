@@ -19,6 +19,11 @@
     width: Number(brushWidthInput.value),
     lastPoint: null
   };
+  /**
+   * Sets up the collaborative drawing canvas.
+   * Handles pointer events, stroke rendering, and gateway sync.
+   * Supports mouse, stylus, and touch input via the Pointer Events API.
+   */
 
   function setActivity(message) {
     activityValue.textContent = message;
