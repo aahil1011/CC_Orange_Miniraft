@@ -7,8 +7,13 @@ function parsePeers() {
     .filter(Boolean);
 }
 
+/**
+ * Generates a randomized election timeout to avoid split votes.
+ * Timeout range: 500ms–800ms as per RAFT specification.
+ * @returns {number} Randomized timeout in milliseconds
+ */
 function randomElectionTimeout() {
-  return Math.floor(Math.random() * 301) + 500;
+    return Math.floor(Math.random() * 301) + 500;
 }
 
 const raftNode = {
@@ -68,7 +73,11 @@ const raftNode = {
     }
   },
 
-  async becomeCandidate() {
+/**
+ * Transitions this node to candidate state and starts a new election.
+ * Increments term, votes for self, then broadcasts RequestVote RPCs.
+ */
+async function becomeCandidate() {
     const rpcClient = require("./rpcClient");
 
     this.state = "candidate";
@@ -88,6 +97,12 @@ const raftNode = {
       this.becomeLeader();
     }
   },
+
+
+  /**
+ * Transitions this node to leader state after winning majority votes.
+ * Cancels election timer and starts sending periodic heartbeats.
+ */
 
   becomeLeader() {
     const rpcClient = require("./rpcClient");
@@ -159,6 +174,14 @@ const raftNode = {
     return true;
   },
 
+
+  /**
+ * Calculates the minimum vote count needed for a quorum.
+ * For a 3-node cluster, majority is 2 votes.
+ * @returns {number} Minimum votes required to win election
+ */
+
+
   getMajorityCount() {
     return Math.floor((this.peers.length + 1) / 2) + 1;
   }
@@ -168,3 +191,6 @@ module.exports = raftNode;
 
 require("./rpcClient");
 raftNode.resetElectionTimer();
+"// RAFT Node - follower state initialization" 
+"// Randomized election timer logic" 
+"// Candidate state and self-vote" 

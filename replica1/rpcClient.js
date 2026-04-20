@@ -51,6 +51,11 @@ async function sendHeartbeat(peerUrl) {
   }
 }
 
+/**
+ * Sends RequestVote RPC to all peer replicas in parallel.
+ * Results are collected via receiveVote() on the raft node.
+ */
+
 async function broadcastRequestVote() {
   raftNode.peers = getPeers();
   await Promise.allSettled(raftNode.peers.map((peerUrl) => sendRequestVote(peerUrl)));
@@ -68,3 +73,4 @@ module.exports = {
   broadcastRequestVote,
   broadcastHeartbeat
 };
+"// Election timer reset on heartbeat" 

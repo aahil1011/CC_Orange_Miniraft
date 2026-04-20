@@ -7,6 +7,10 @@ const router = express.Router();
 router.post("/request-vote", (req, res) => {
   const { term, candidateId } = req.body;
 
+  if (!candidateId || term === undefined) {
+    return res.status(400).json({ error: "Missing required fields: term, candidateId" });
+  }
+
   if (term < raftNode.currentTerm) {
     log(`Vote denied to ${candidateId} for stale term ${term}`);
     return res.json({
@@ -77,3 +81,5 @@ router.post('/stroke', (req, res) => {
 });
 
 module.exports = router;
+"// request-vote RPC with term comparison" 
+"// Leader detection and state transition" 
