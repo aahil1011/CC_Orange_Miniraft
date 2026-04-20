@@ -103,7 +103,13 @@
     committedStrokeHistory.push(stroke);
     redrawAllStrokes();
   }
-
+  /**
+   * Constructs and publishes a stroke segment to the gateway.
+   * Stroke is added to pending state immediately for visual feedback,
+   * then confirmed or discarded based on gateway response.
+   * @param {{x: number, y: number}} startPoint - Normalized start coordinates
+   * @param {{x: number, y: number}} endPoint - Normalized end coordinates
+   */
   function publishStroke(startPoint, endPoint) {
     const stroke = {
       id: `${state.clientId}-${Date.now()}-${state.strokeSequence++}`,
