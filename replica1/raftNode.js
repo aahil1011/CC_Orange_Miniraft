@@ -12,9 +12,8 @@ function parsePeers() {
  * Timeout range: 500ms–800ms as per RAFT specification.
  * @returns {number} Randomized timeout in milliseconds
  */
-
 function randomElectionTimeout() {
-  return Math.floor(Math.random() * 301) + 500;
+    return Math.floor(Math.random() * 301) + 500;
 }
 
 const raftNode = {
@@ -74,12 +73,11 @@ const raftNode = {
     }
   },
 
-  /**
+/**
  * Transitions this node to candidate state and starts a new election.
  * Increments term, votes for self, then broadcasts RequestVote RPCs.
  */
-
-  async becomeCandidate() {
+async function becomeCandidate() {
     const rpcClient = require("./rpcClient");
 
     this.state = "candidate";
