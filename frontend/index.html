@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Distributed Drawing Board</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand-block">
+          <p class="eyebrow">Gateway-connected collaboration</p>
+          <h1>Distributed Drawing Board</h1>
+        </div>
+        <div id="connectionStatus" class="connection-pill status-connecting">Connecting...</div>
+      </header>
+
+      <section class="status-bar" aria-label="Cluster status indicators">
+        <div class="status-card">
+          <span class="status-label">Leader</span>
+          <strong id="leaderValue">Discovering...</strong>
+        </div>
+        <div class="status-card">
+          <span class="status-label">Term</span>
+          <strong id="termValue">-</strong>
+        </div>
+        <div class="status-card">
+          <span class="status-label">Board Status</span>
+          <strong id="activityValue">Ready to draw</strong>
+        </div>
+      </section>
+
+      <main class="board-layout">
+        <aside class="tool-panel">
+          <div class="panel-card">
+            <p class="panel-title">Brush Color</p>
+            <div class="color-grid">
+              <button class="color-swatch is-active" data-color="#ff6b35" style="--swatch:#ff6b35" aria-label="Orange brush"></button>
+              <button class="color-swatch" data-color="#1b4965" style="--swatch:#1b4965" aria-label="Blue brush"></button>
+              <button class="color-swatch" data-color="#2a9d8f" style="--swatch:#2a9d8f" aria-label="Teal brush"></button>
+              <button class="color-swatch" data-color="#e63946" style="--swatch:#e63946" aria-label="Red brush"></button>
+              <button class="color-swatch" data-color="#264653" style="--swatch:#264653" aria-label="Ink brush"></button>
+              <button class="color-swatch" data-color="#f4a261" style="--swatch:#f4a261" aria-label="Sand brush"></button>
+            </div>
+          </div>
+
+          <div class="panel-card">
+            <div class="slider-row">
+              <p class="panel-title">Brush Width</p>
+              <strong id="brushWidthValue">4px</strong>
+            </div>
+            <input id="brushWidth" type="range" min="2" max="14" step="1" value="4" />
+          </div>
+
+          <div class="panel-card guide-card">
+            <p class="panel-title">How It Works</p>
+            <p>Draw on the canvas and the gateway forwards each stroke to the current RAFT leader before broadcasting it to every browser.</p>
+          </div>
+        </aside>
+
+        <section class="canvas-stage">
+          <div class="stage-overlay">
+            <span>Live board</span>
+            <span>Gateway only</span>
+          </div>
+          <canvas id="boardCanvas"></canvas>
+        </section>
+      </main>
+    </div>
+
+    <script src="canvas.js"></script>
+    <script src="ws.js"></script>
+  </body>
+</html>
