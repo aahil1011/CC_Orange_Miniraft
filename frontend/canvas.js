@@ -84,7 +84,13 @@
       }
     }, 2200);
   }
-
+/**
+   * Commits a stroke to the permanent canvas history.
+   * Removes it from pending state and deduplicates using stroke ID.
+   * This prevents echo - strokes sent by this client are not re-rendered
+   * when they arrive back from the gateway broadcast.
+   * @param {object} stroke - The confirmed stroke to commit
+   */
   function commitStroke(stroke) {
     pendingStrokes.delete(stroke.id);
 
